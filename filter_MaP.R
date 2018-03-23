@@ -33,38 +33,40 @@ reshape_merged_mismatch_datasets<-function(dat1,dat2, label1, label2) {
 	return(dat)
 }
 
+run_MaP_filtering <- function(input_dms1,input_dms2,input_rnaseq1,input_rnaseq1, output_file) {
 
+	## 1. Read data
+	mismatches_dmsseq.rep1<-from_file_to_clean_dat(input_dms1)
+	mismatches_dmsseq.rep2<-from_file_to_clean_dat(input_dms2)
+	mismatches_rnaseq.rep1<-from_file_to_clean_dat(input_rnaseq1)
+	mismatches_rnaseq.rep2<-from_file_to_clean_dat(input_rnaseq1)
 
-## SCRIPT:
+	## 2. Filter by coverage and mismatch frequency 
+	mismatches_dmsseq.rep1.no_snps<-from_alldat_to_filtered(mismatches_dmsseq.rep1)
+	mismatches_dmsseq.rep2.no_snps<-from_alldat_to_filtered(mismatches_dmsseq.rep2)
+	mismatches_rnaseq.rep1.no_snps<-from_alldat_to_filtered(mismatches_rnaseq.rep1)
+	mismatches_rnaseq.rep2.no_snps<-from_alldat_to_filtered(mismatches_rnaseq.rep2)
 
+	## 3. Filter by replicable mismatches
+	mismatches_dmsseq.no_snps.reps<-merge(mismatches_dmsseq.rep1.no_snps,mismatches_dmsseq.rep2.no_snps, by=0, all=FALSE)
+	mismatches_rnaseq.no_snps.reps<-merge(mismatches_rnaseq.rep1.no_snps,mismatches_rnaseq.rep2.no_snps, by=0, all=FALSE)
 
-## 1. Read data
-mismatches_dmsseq.rep1<-from_file_to_clean_dat("sample_data/mismatches_dmsseq.rep1.txt")
-mismatches_dmsseq.rep2<-from_file_to_clean_dat("sample_data/mismatches_dmsseq.rep2.txt")
-mismatches_rnaseq.rep1<-from_file_to_clean_dat("sample_data/mismatches_rnaseq.rep1.txt")
-mismatches_rnaseq.rep2<-from_file_to_clean_dat("sample_data/mismatches_rnaseq.rep2.txt")
+	## 4. Reshaping, ordering
+	mismatches_dmsseq.no_snps.reps.CLEAN<-reshape_merged_mismatch_datasets(mismatches_dmsseq.no_snps.reps,mismatches_dmsseq.rep1.no_snps,"rep1","rep2")
+	mismatches_rnaseq.no_snps.reps.CLEAN<-reshape_merged_mismatch_datasets(mismatches_rnaseq.no_snps.reps,mismatches_rnaseq.rep1.no_snps,"rep1","rep2")
 
-## 2. Filter by coverage and mismatch frequency 
-mismatches_dmsseq.rep1.no_snps<-from_alldat_to_filtered(mismatches_dmsseq.rep1)
-mismatches_dmsseq.rep2.no_snps<-from_alldat_to_filtered(mismatches_dmsseq.rep2)
-mismatches_rnaseq.rep1.no_snps<-from_alldat_to_filtered(mismatches_rnaseq.rep1)
-mismatches_rnaseq.rep2.no_snps<-from_alldat_to_filtered(mismatches_rnaseq.rep2)
+	mismatches_dmsseq.no_snps.reps.CLEAN<-	mismatches_dmsseq.no_snps.reps.CLEAN[order(mismatches_dmsseq.no_snps.reps.CLEAN$pos.rep1),]
+	mismatches_rnaseq.no_snps.reps.CLEAN<-mismatches_rnaseq.no_snps.reps.CLEAN[order(mismatches_rnaseq.no_snps.reps.CLEAN$pos.rep1),]
 
-## 3. Filter by replicable mismatches
-mismatches_dmsseq.no_snps.reps<-merge(mismatches_dmsseq.rep1.no_snps,mismatches_dmsseq.rep2.no_snps, by=0, all=FALSE)
-mismatches_rnaseq.no_snps.reps<-merge(mismatches_rnaseq.rep1.no_snps,mismatches_rnaseq.rep2.no_snps, by=0, all=FALSE)
+	## 5. Filter RNASeq positions
+	mismatches_dmsseq.rnafilter<-mismatches_dmsseq.no_snps.reps.CLEAN[ ! row.names(mismatches_dmsseq.no_snps.reps.CLEAN) %in% row.names(mismatches_rnaseq.no_snps.reps.CLEAN), ]
 
-## 4. Reshaping, ordering
-mismatches_dmsseq.no_snps.reps.CLEAN<-reshape_merged_mismatch_datasets(mismatches_dmsseq.no_snps.reps,mismatches_dmsseq.rep1.no_snps,"rep1","rep2")
-mismatches_rnaseq.no_snps.reps.CLEAN<-reshape_merged_mismatch_datasets(mismatches_rnaseq.no_snps.reps,mismatches_rnaseq.rep1.no_snps,"rep1","rep2")
+	## 6. Write table
+	write.table(mismatches_dmsseq.rnafilter, file=output_file, quote=F)
+	
+}
 
-mismatches_dmsseq.no_snps.reps.CLEAN<-mismatches_dmsseq.no_snps.reps.CLEAN[order(mismatches_dmsseq.no_snps.reps.CLEAN$pos.rep1),]
-mismatches_rnaseq.no_snps.reps.CLEAN<-mismatches_rnaseq.no_snps.reps.CLEAN[order(mismatches_rnaseq.no_snps.reps.CLEAN$pos.rep1),]
+## SCRIPT (not run):
 
-## 5. Filter RNASeq positions
-mismatches_dmsseq.rnafilter<-mismatches_dmsseq.no_snps.reps.CLEAN[ ! row.names(mismatches_dmsseq.no_snps.reps.CLEAN) %in% row.names(mismatches_rnaseq.no_snps.reps.CLEAN), ]
-
-## 6. Write table
-write.table(mismatches_dmsseq.rnafilter, file="results/mismatches_dmsseq.filtered.txt", quote=F)
-
+# run_MaP_filtering("sample_data/mismatches_dmsseq.rep1.txt","sample_data/mismatches_dmsseq.rep2.txt","sample_data/mismatches_rnaseq.rep1.txt","sample_data/mismatches_rnaseq.rep2.txt","results/mismatches_dmsseq.filtered.txt")
 

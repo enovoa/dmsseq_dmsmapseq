@@ -6,19 +6,22 @@
 ### Distributed GNU Affero General Public License v3.0
 ########################################################
 
-library("ggtern")
+
 
 myggtern_plot_A<-function(mydf,C,G,T,mytitle) {
+    library("ggtern")
 	plot<-ggtern(mydf,aes(C,G,T))+ geom_point(aes(color = log(mean_coverage)), mydf) + ggtitle(mytitle)
 	return(plot)
 }
 
 myggtern_plot_C<-function(mydf,A,G,T,mytitle) {
+    library("ggtern")
 	plot<-ggtern(mydf,aes(A,G,T))+ geom_point(aes(color = log(mean_coverage)), mydf) + ggtitle(mytitle)
 	return(plot)
 }
 
 myggtern_plot_for_As_Cs<-function(dat_freq,sampleName){
+    library("ggtern")
 	dat.A<-dat_freq[dat_freq$ref_nuc.rep1=="A",]
 	dat.C<-dat_freq[dat_freq$ref_nuc.rep1=="C",]
 
@@ -28,7 +31,8 @@ myggtern_plot_for_As_Cs<-function(dat_freq,sampleName){
 	dev.off()
 }
 
-run_ternary_plots<-function(dat_freq,dat_freqName) {
+run_plot_4_nucleotides<-function(dat_freq,dat_freqName) {
+    library("ggtern")
 	setwd("./results")
 	dat_freq$A<-round(rowMeans(dat_freq[,c("A.rep1","A.rep2")]))
 	dat_freq$C<-round(rowMeans(dat_freq[,c("C.rep1","C.rep2")]))
@@ -37,7 +41,10 @@ run_ternary_plots<-function(dat_freq,dat_freqName) {
 	myggtern_plot_for_As_Cs(na.omit(dat_freq),dat_freqName)
 }
 
+run_ternary_plot(dat_input) {
+    dat<-read.table(dat_input)
+    run_plot_4_nucleotides(dat,"ternary_plot")
+}
 
-## To execute:
-dat<-read.table("sample_data/mismatches_for_ternary_plot.txt")
-run_ternary_plots(dat,"ternary_plot")
+# SCRIPT:
+# run_ternary_plot("sample_data/mismatches_for_ternary_plot.txt")
