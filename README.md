@@ -24,28 +24,24 @@ No prior installation of additional software is required.
 
 # 2. Instructions for use
 
-# Filter_MaP.R
-Import R functions: 
+* Filter_MaP.R
+Import R functions to run filtering of MaP data: 
 > source("filter_MaP.R")
-Run filtering:
 > run_MaP_filtering("sample_data/mismatches_dmsseq.rep1.txt","sample_data/mismatches_dmsseq.rep2.txt","sample_data/mismatches_rnaseq.rep1.txt","sample_data/mismatches_rnaseq.rep2.txt","results/mismatches_dmsseq.filtered.txt")
 
-# ternary_plots_MaP.R
-Import R functions:
+* ternary_plots_MaP.R
+Import R functions to build ternary plot: 
 > source("ternary_plots_MaP.R")
-Build ternary plot: 
 > run_ternary_plot("sample_data/mismatches_for_ternary_plot.txt")
 
-# SVM_training.R
-Import R functions
+* SVM_training.R
+Import R functions to build SVM and get predictions:
 > source("SVM_training.R")
-Build SVM and get predictions:
 > run_SVM_training("sample_data/mismatches_for_SVM_training.txt")
 
-# merge_dmsseq_mapseq.R
-Import R functions
+* merge_dmsseq_mapseq.R
+Import R functions to merge DMS-Seq (RT-drop-off) and MaPSeq (mutational profiling) data:
 > source("merge_dmsseq_mapseq.R")
-Merge DMS-Seq (RT-drop-off) and MaPSeq (mutational profiling) data:
 > run_merge_dmsseq_mapseq("sample_data/mismatches_and_accessibility_for_merging.txt")
 
 
