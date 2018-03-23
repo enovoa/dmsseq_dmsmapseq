@@ -6,7 +6,7 @@ Here we provide several scripts that can facilitate the filtering, processing an
 A small dataset to demo the scripts is included (folder: sample_data)
 Expected output of the scripts is also included (folder: results)
 
-# 1. System requirements and installation
+### Getting Started
 These scripts are written in R, and have been tested under R-3.3.2. 
 
 Packages that need to be installed:
@@ -17,13 +17,14 @@ Packages that need to be installed:
 To install the R packages, start R, and prompt:
 > install.packages("ggtern,caTools,e1071")
 
+### Prerequisites
 No prior installation of additional software is required.
 
-# 2. Instructions for use
+### Running the demo
 
 * To run filtering of MaP data: 
-> source("filter_MaP.R");
-> run_MaP_filtering("sample_data/mismatches_dmsseq.rep1.txt","sample_data/mismatches_dmsseq.rep2.txt","sample_data/mismatches_rnaseq.rep1.txt","sample_data/mismatches_rnaseq.rep2.txt","results/mismatches_dmsseq.filtered.txt")
+``` source("filter_MaP.R")
+``` run_MaP_filtering("sample_data/mismatches_dmsseq.rep1.txt","sample_data/mismatches_dmsseq.rep2.txt","sample_data/mismatches_rnaseq.rep1.txt","sample_data/mismatches_rnaseq.rep2.txt","results/mismatches_dmsseq.filtered.txt")
 
 * To build ternary plots: 
 > source("ternary_plots_MaP.R");
@@ -38,4 +39,11 @@ No prior installation of additional software is required.
 > run_merge_dmsseq_mapseq("sample_data/mismatches_and_accessibility_for_merging.txt")
 
 
+### License 
 
+See LICENSE.md for details
+
+### Contact
+
+Please email me at e.novoa@garvan.org.au if you have any doubts/concerns/suggestions.
+Thanks! 
