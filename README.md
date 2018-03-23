@@ -8,7 +8,6 @@ Expected output of the scripts is also included (folder: results)
 
 # 1. System requirements and installation
 These scripts are written in R, and have been tested under R-3.3.2. 
-R versions should be at least XXX due to specific R package dependency.
 
 Packages that need to be installed:
 - ggtern (version: 2.2.1 or greater)
