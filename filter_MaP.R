@@ -33,13 +33,13 @@ reshape_merged_mismatch_datasets<-function(dat1,dat2, label1, label2) {
 	return(dat)
 }
 
-run_MaP_filtering <- function(input_dms1,input_dms2,input_rnaseq1,input_rnaseq1, output_file) {
+run_MaP_filtering <- function(input_dms1,input_dms2,input_rnaseq1,input_rnaseq2, output_file) {
 
 	## 1. Read data
 	mismatches_dmsseq.rep1<-from_file_to_clean_dat(input_dms1)
 	mismatches_dmsseq.rep2<-from_file_to_clean_dat(input_dms2)
 	mismatches_rnaseq.rep1<-from_file_to_clean_dat(input_rnaseq1)
-	mismatches_rnaseq.rep2<-from_file_to_clean_dat(input_rnaseq1)
+	mismatches_rnaseq.rep2<-from_file_to_clean_dat(input_rnaseq2)
 
 	## 2. Filter by coverage and mismatch frequency 
 	mismatches_dmsseq.rep1.no_snps<-from_alldat_to_filtered(mismatches_dmsseq.rep1)
