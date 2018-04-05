@@ -18,7 +18,7 @@ Packages that need to be installed:
 
 To install the R packages, start R, and prompt:
 ```
-install.packages("ggtern,caTools,e1071")
+install.packages("ggtern","caTools","e1071")
 ```
 
 ### Prerequisites
