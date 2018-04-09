@@ -1,1 +1,1 @@
-# Folder where scripts will generate the outputs - do not remove!
+# Folder where scripts will generate the outputs - do not delete folder
