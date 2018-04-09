@@ -41,7 +41,7 @@ run_plot_4_nucleotides<-function(dat_freq,dat_freqName) {
 	myggtern_plot_for_As_Cs(na.omit(dat_freq),dat_freqName)
 }
 
-run_ternary_plot(dat_input) {
+run_ternary_plot<-function(dat_input) {
     dat<-read.table(dat_input)
     run_plot_4_nucleotides(dat,"ternary_plot")
 }
