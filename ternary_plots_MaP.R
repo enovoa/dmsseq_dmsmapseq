@@ -25,7 +25,7 @@ myggtern_plot_for_As_Cs<-function(dat_freq,sampleName){
 	dat.A<-dat_freq[dat_freq$ref_nuc.rep1=="A",]
 	dat.C<-dat_freq[dat_freq$ref_nuc.rep1=="C",]
 
-	pdf(paste(sampleName,"TERN_PLOT.pdf",sep="."),height=7,width=7)
+	pdf(paste("./results",paste(sampleName,"TERN_PLOT.pdf",sep="."),sep="/"),height=7,width=7)
 	plot(myggtern_plot_A(dat.A,C,G,T,paste("A mismatches",sampleName,sep=", ")))
 	plot(myggtern_plot_C(dat.C,A,G,T,paste("C mismatches",sampleName,sep=", ")))
 	dev.off()
@@ -33,7 +33,6 @@ myggtern_plot_for_As_Cs<-function(dat_freq,sampleName){
 
 run_plot_4_nucleotides<-function(dat_freq,dat_freqName) {
     library("ggtern")
-	setwd("./results")
 	dat_freq$A<-round(rowMeans(dat_freq[,c("A.rep1","A.rep2")]))
 	dat_freq$C<-round(rowMeans(dat_freq[,c("C.rep1","C.rep2")]))
 	dat_freq$G<-round(rowMeans(dat_freq[,c("G.rep1","G.rep2")]))
