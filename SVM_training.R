@@ -40,10 +40,10 @@ train_svm_return_model<-function(dat,selected_features) {
 	row.names(newdat)<-newdat[,1]
 	newdat<-newdat[,2:dim(newdat)[2]]
 	colnames(newdat)<-c(colnames(dat),"prediction")
-	print(head(newdat))
+	#print(head(newdat))
 	#newdat$prediction2<-abs(as.numeric(newdat$prediction) - 2)
+	#print(summary(svm_model))
 	
-	print(summary(svm_model))
 	print(table(newdat$prediction,newdat$paired_status))
 
 	return(svm_model)
@@ -64,11 +64,10 @@ test_svm_return_Pred<-function(dat,svm_model,selected_features) {
 	
 	#print(head(newdat))
 	#newdat$prediction2<-abs(as.numeric(newdat$prediction) - 2)
-	
-	print("---> This is the summary of the SVM model")
-	print(summary(svm_model))
-	print("---> This is the contingency table of the experimental pairing status versus predicted pairing status")
-	print(table(newdat$prediction,newdat$paired_status))
+	#print(summary(svm_model))
+	print("Accuracy of the model:")
+	print(svm_model$tot.accuracy)
+	#print(svm_model$accuracies)
 
 	return(newdat)
 }
@@ -83,14 +82,26 @@ run_SVM_training<-function(dat_input, output_file) {
     # 2. Subdivide into As and Cs
     dat.TRAIN.As<-dat.TRAIN[dat.TRAIN$ref_nuc=="A",]
     dat.TRAIN.Cs<-dat.TRAIN[dat.TRAIN$ref_nuc=="C",]
+    
+    dat.TEST.As<-dat.TEST[dat.TEST$ref_nuc=="A",]
+    dat.TEST.Cs<-dat.TEST[dat.TEST$ref_nuc=="C",]
 
     # 3. Train SVM
+   	print("TRAINING SET - As")
     svm_model.TRAIN.As<-train_svm_return_model(dat.TRAIN.As, c("missmatch_freq.rep1","TGratio.rep1","missmatch_freq.rep2","TGratio.rep2","react.B1","react.B2"))
+    
+   	print("TRAINING SET - Cs")
+    svm_model.TRAIN.Cs<-train_svm_return_model(dat.TRAIN.Cs, c("missmatch_freq.rep1","TGratio.rep1","missmatch_freq.rep2","TGratio.rep2","react.B1","react.B2"))
 
     # 4. Test SVM
-    dat.withPred<-test_svm_return_Pred(dat.TRAIN.As, svm_model.TRAIN.As,c("missmatch_freq.rep1","TGratio.rep1","missmatch_freq.rep2","TGratio.rep2","react.B1","react.B2"))
+   	print("TEST SET - As")
+    dat.withPred.As<-test_svm_return_Pred(dat.TEST.As, svm_model.TRAIN.As,c("missmatch_freq.rep1","TAratio.rep1","missmatch_freq.rep2","TAratio.rep2","react.B1","react.B2"))
+
+   	print("TEST SET - Cs")
+    dat.withPred.Cs<-test_svm_return_Pred(dat.TEST.Cs, svm_model.TRAIN.Cs,c("missmatch_freq.rep1","TAratio.rep1","missmatch_freq.rep2","TAratio.rep2","react.B1","react.B2"))
 
   	# 6. Subset data and write table
+  	dat.withPred<-rbind(dat.withPred.As,dat.withPred.Cs)
  	write.table(dat.withPred, file="results/mismatches_with_SVM_predictions.txt", quote=F)
 
 }
